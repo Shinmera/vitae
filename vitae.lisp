@@ -19,18 +19,24 @@
   (remhash name *series*)
   name)
 
+(defun find-any (search other)
+  (if (listp search)
+      (loop for item in search
+            thereis (find item other))
+      (find-any (list search) other)))
+
 (defun list-series (&key tagged)
   (sort (loop for series being the hash-values of *series*
-              when (or (null tagged) (find tagged (tags series)))
+              when (or (null tagged) (find-any tagged (tags series)))
               collect series)
         #'string< :key #'name))
 
 (defun list-events (&key tagged)
   (sort (loop for series being the hash-values of *series*
-              append (if (or (null tagged) (find tagged (tags series)))
+              append (if (or (null tagged) (find-any tagged (tags series)))
                          (events series)
                          (loop for event in (events series)
-                               when (find tagged (tags event))
+                               when (find-any tagged (tags event))
                                collect event)))
         #'date< :key #'date))
 
