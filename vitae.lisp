@@ -29,7 +29,7 @@
   (sort (loop for series being the hash-values of *series*
               when (or (null tagged) (find-any tagged (tags series)))
               collect series)
-        #'string< :key #'name))
+        #'string-lessp :key #'name))
 
 (defun list-events (&key tagged)
   (sort (loop for series being the hash-values of *series*
