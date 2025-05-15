@@ -91,8 +91,8 @@
 (defun make-date (&optional year month)
   (make-instance 'date :year year :month month))
 
-(defun format-date (date)
-  (format NIL "~:[____~;~:*~4,' d~].~:[__~;~:*~2,'0d~]"
+(defun format-date (date &optional (output NIL))
+  (format output "~:[____~;~:*~4,' d~].~:[__~;~:*~2,'0d~]"
           (year date) (month date)))
 
 (defun parse-date (string)
